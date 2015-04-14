@@ -2,8 +2,7 @@
 /*
 Plugin Name: Get Tweets By Hashtag
 Plugin URI: http://viastudio.com
-Description: Get tweets by hashtag and display them (also caches them for an hour)... 
-    Use the shortcode [get-tweets hashtag="#yoursearch"] to use, nothing else to configure. Comes wih a basic style
+Description: Get tweets by hashtag and display them 
 Version: 1
 Author: Nick Stewart
 Author URI: http://www.nickstewart.me
@@ -14,11 +13,44 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 //include css
 function loadcss() {
-    wp_register_style('your_css_and_js', plugins_url('default.css',__FILE__ ));
-    wp_enqueue_style('your_css_and_js');
+    wp_register_style('get-tweets-style', plugins_url('default.css',__FILE__ ));
+    wp_enqueue_style('get-tweets-style');
 }
 loadcss();
 
+//plugin settings
+function get_tweets_createsettings() {
+    add_options_page('Get Tweeets by Hashtag Settings', 'Get Tweets by Hashtag', 'manage_options', 'get-tweets', 'get_tweets_settingspage'); //settings menu page
+}
+function get_tweets_registersettings() { // whitelist options
+    register_setting( 'get-tweets-api', 'oauth_access_token' );
+    register_setting( 'get-tweets-api', 'oauth_access_token_secret' );
+    register_setting( 'get-tweets-api', 'consumer_key' );
+    register_setting( 'get-tweets-api', 'consumer_secret' );
+}
+if ( is_admin() ) {
+    add_action('admin_menu', 'get_tweets_createsettings');
+    add_action( 'admin_init', 'get_tweets_registersettings' );
+}
+
+function get_tweets_settingspage() {
+    echo '<h2>Get Tweets by Hashtag</h2><p>Place shortcode on any page or post for plugin to display. Tweets are cached for 1 hour (in the next update this will be an option)</p>';
+    echo '<b>Shortcode</b><br>[get-tweets hashtag="#yourhashtag"]';
+    echo '<style>td{ padding-left:20px; }</style>';
+    echo '<h2>Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information</p>';
+    echo '<form method="post" action="options.php"><table>';
+    settings_fields( 'get-tweets-api' );
+    do_settings_sections( 'get-tweets-api' );
+    echo '<tr><td>Oauth Access Token</td><td><input type="text" name="oauth_access_token" value="' . esc_attr( get_option('oauth_access_token') ) . '" />';
+    echo '<tr><td>Oauth Access Secret</td><td><input type="text" name="oauth_access_token_secret" value="' . esc_attr( get_option('oauth_access_token_secret') ) . '" />';
+    echo '<tr><td>Consumer Key</td><td><input type="text" name="consumer_key" value="' . esc_attr( get_option('consumer_key') ) . '" />';
+    echo '<tr><td>Consimer Secret</td><td><input type="text" name="consumer_secret" value="' . esc_attr( get_option('consumer_secret') ) . '" />';
+    echo '</table>';
+    submit_button();
+    echo '</form>';
+    echo '<h2>About</h2><p>Created by Nick Stewart at <a href="http://viastudio.com" target="_blank">VIA Studio</a>. ';
+    echo 'Check out the <a href="http://silencio.io/" target="_blank">Silencio theme framework</a></p>';
+}
 //cleans up hashtag
 function clean($string) {
    $string = str_replace(' ', '-', $string); 
@@ -45,12 +77,11 @@ function get_tweets_cache($hashtag) {
 //makes call to Twitter and retrives the response
 function get_tweets_find($hashtag) {
     if (file_exists(plugin_dir_path( __FILE__ ) . 'twitteroauth/autoload.php')) {
-        //eventually this will be in a settings panel
         $settings = array(
-            'oauth_access_token' => "15876679-3NY3KyDn0xiO2mw5YY5d9Q0hNiGGxXJKzDHVT9FuC",
-            'oauth_access_token_secret' => "xMewYfEI7dqqDRMnayWJhtnHpXaPhfQOOudzJINE5FeYK",
-            'consumer_key' => "LDZmdTrqSbZEJsTWWrtT6d73v",
-            'consumer_secret' => "lajAnQfKfPaVmCWk7AXBLZkg1aaFMWOdk3y5jhRuE9aHCc93j9"
+            'oauth_access_token' => get_option('oauth_access_token'),
+            'oauth_access_token_secret' => get_option('oauth_access_token_secret'),
+            'consumer_key' => get_option('consumer_key'),
+            'consumer_secret' => get_option('consumer_secret'),
         );
         $connection = new TwitterOAuth($settings['consumer_key'], $settings['consumer_secret'], $settings['oauth_access_token'], $settings['oauth_access_token_secret']);
         $content = $connection->get("account/verify_credentials");
@@ -90,10 +121,27 @@ function get_tweets_get($hashtag){
 //shortcode function
 function get_tweets_shortcode( $atts, $content = null)  {
     extract( shortcode_atts( array( 'hashtag' => ''), $atts ) );
-    if($hashtag) {
-        get_tweets_get($hashtag);
+    //check to make sure all thte settings are filled
+    if(strlen(get_option('oauth_access_token')) > 10) {
+        if(strlen(get_option('oauth_access_token_secret')) > 10) {
+            if(strlen(get_option('consumer_key')) > 10) {
+                if(strlen(get_option('consumer_secret')) > 10) {
+                    if($hashtag) {
+                        get_tweets_get($hashtag);
+                    } else {
+                        echo 'Please use add a hashtag to search.. [get-tweets hashtag="#nfl"] .. for example';
+                    }
+                } else {
+                    echo 'Please fill out the consumer_secret setting';
+                }
+            } else {
+                echo 'Please fill out the consumer_key setting';
+            }
+        } else {
+            echo 'Please fill out the oauth_access_token_secret setting';
+        }
     } else {
-        echo 'Please use add a hashtag to search.. [get-tweets hashtag="#nfl"] .. for example';
+        echo 'Please fill out the oauth_access_token setting';
     }
 }
 add_shortcode('get-tweets', 'get_tweets_shortcode');
