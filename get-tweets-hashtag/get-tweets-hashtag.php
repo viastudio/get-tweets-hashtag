@@ -91,11 +91,6 @@ function get_tweets_settingspage() {
     echo '<h2>About</h2><p>Created by Nick Stewart at <a href="http://viastudio.com" target="_blank">VIA Studio</a>. ';
     echo 'Check out the <a href="http://silencio.io/" target="_blank">Silencio theme framework</a></p>';
 }
-//cleans up hashtag
-function clean($string) {
-    $string = str_replace(' ', '-', $string);
-    return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
-}
 //creates the cache file and checks to see if it needs to be recreated
 function get_tweets_cache($hashtag, $count) {
     global $wpdb;
