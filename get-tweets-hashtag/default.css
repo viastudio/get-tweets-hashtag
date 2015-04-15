@@ -12,7 +12,7 @@
 .quick-tweet-avatar {
 	display: inline;
 	float: left;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 .quick-tweet-avatar img{
 	width: 50px;
@@ -29,4 +29,44 @@
 	float: left;
 	margin-left: 20px;
 	width: 400px;
+}
+.quick-tweet-button {
+    display: block;
+    clear: both;
+    margin-top: 30px;
+    padding-bottom: 30px;
+}
+.quick-tweet-button a {
+    padding: 15px;
+    background: #4099FF;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+}
+.quick-tweet-button a:visited{
+    color: #fff;
+}
+.quick-tweet-internalbutton {
+    display: block;
+    clear: both;
+    margin-top: 30px;
+    padding-bottom: 30px;
+}
+.quick-tweet-internalbutton a {
+    padding: 15px;
+    background: #4099FF;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+}
+.quick-tweet-internalbutton a:visited{
+    color: #fff;
+}
+.quick-tweet-internalbutton .tweet-it{
+    display: inline-block;
+    float: right;
+}
+.quick-tweet-internalbutton textarea{
+    margin-bottom: 30px;
+    padding: 5px;
 }

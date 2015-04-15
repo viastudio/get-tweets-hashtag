@@ -61,6 +61,7 @@ function get_tweets_registersettings() {
     register_setting('get-tweets-api', 'oauth_access_token_secret');
     register_setting('get-tweets-api', 'consumer_key');
     register_setting('get-tweets-api', 'consumer_secret');
+
 }
 if (is_admin()) {
     add_action('admin_menu', 'get_tweets_createsettings');
@@ -77,7 +78,7 @@ function get_tweets_settingspage() {
     echo '<h2>Get Tweets by Hashtag</h2><p>Place shortcode on any page or post for plugin to display. Tweets are cached for 1 hour (to reset cache just click the save changes button)</p>';
     echo '<b>Shortcodes</b><br><br><code>[get-tweets hashtag="#yourhashtag"]</code><br><br><code>[get-tweets hashtag="#yourhashtag" count="10"]</code> (count is optional, default is set for 15)';
     echo '<style>td{ padding-left:20px; }</style>';
-    echo '<h2>Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information for the plugin to work.</p>';
+    echo '<h2>Twitter API Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information for the plugin to work.</p>';
     echo '<form method="post" action="options.php"><table>';
     settings_fields('get-tweets-api');
     do_settings_sections('get-tweets-api');
@@ -87,7 +88,6 @@ function get_tweets_settingspage() {
     echo '<tr><td>Consimer Secret</td><td><input type="text" name="consumer_secret" value="' . esc_attr(get_option('consumer_secret')) . '" />';
     echo '</table>';
     submit_button();
-    echo '</form>';
     echo '<h2>About</h2><p>Created by Nick Stewart at <a href="http://viastudio.com" target="_blank">VIA Studio</a>. ';
     echo 'Check out the <a href="http://silencio.io/" target="_blank">Silencio theme framework</a></p>';
 }
@@ -171,7 +171,7 @@ function get_tweets_get($hashtag, $count) {
     }
 }
 //shortcode function
-function get_tweets_shortcode($atts, $content = null) {
+function get_tweets_tweets_shortcode($atts, $content = null) {
     extract(shortcode_atts(array( 'hashtag' => '', 'count' => ''), $atts));
     //check to make sure all thte settings are filled
     if (strlen(get_option('oauth_access_token')) > 10) {
@@ -200,9 +200,23 @@ function get_tweets_shortcode($atts, $content = null) {
         echo 'Please fill out the oauth_access_token setting';
     }
 }
+//custom shortcodes for VIA
+function get_tweets_viatweet_shortcode($atts, $content = null) {
+    extract(shortcode_atts(array( 'text' => '', 'title' => '' ), $atts));
+    if ($text) {
+        if ($title) {
+            echo '<script src="' . plugins_url('via.js', __FILE__) . '"></script>';
+            echo '<div class="quick-tweet-internalbutton"><a class="start" text="' . $text . '">' . $title . '</a><a class="tweet-it" target="_blank"href="#">Tweet It!</a></div>';
+        } else {
+            echo 'Missing title';
+        }
+    } else {
+        echo 'Missing text';
+    }
+}
 
-add_shortcode('get-tweets', 'get_tweets_shortcode');
+add_shortcode('get-tweets', 'get_tweets_tweets_shortcode');
+add_shortcode('get-tweets-button', 'get_tweets_viatweet_shortcode');
 
 register_activation_hook(__FILE__, 'get_tweets_install');
-//add_action( 'plugins_loaded', 'get_tweets_update' );
-
+add_action('plugins_loaded', 'get_tweets_update');
