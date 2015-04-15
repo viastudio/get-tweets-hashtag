@@ -38,7 +38,7 @@ comes with a basic styling.
 == Upgrade Notice ==
 
 = 1.5 =
-*Added count option
+Added count option
 
 = 1.0 =
 Plugin creation
