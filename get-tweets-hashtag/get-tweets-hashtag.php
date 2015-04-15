@@ -54,7 +54,7 @@ loadcss();
 
 //plugin settings
 function get_tweets_createsettings() {
-    add_options_page('Get Tweeets by Hashtag Settings', 'Get Tweets by Hashtag', 'manage_options', 'get-tweets', 'get_tweets_settingspage'); //settings menu page
+    add_options_page('Get Tweets by Hashtag Settings', 'Get Tweets by Hashtag', 'manage_options', 'get-tweets', 'get_tweets_settingspage'); //settings menu page
 }
 function get_tweets_registersettings() {
     register_setting('get-tweets-api', 'oauth_access_token');
@@ -206,7 +206,7 @@ function get_tweets_viatweet_shortcode($atts, $content = null) {
     if ($text) {
         if ($title) {
             echo '<script src="' . plugins_url('via.js', __FILE__) . '"></script>';
-            echo '<div class="quick-tweet-internalbutton"><a class="start" text="' . $text . '">' . $title . '</a><a class="tweet-it" target="_blank"href="#">Tweet It!</a></div>';
+            echo '<div class="quick-tweet-internalbutton"><a class="start" text="' . $text . '">' . $title . '</a><a class="tweet-it" target="_blank"href="#">Post It!</a></div>';
         } else {
             echo 'Missing title';
         }

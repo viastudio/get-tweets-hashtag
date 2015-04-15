@@ -63,7 +63,7 @@
     color: #fff;
 }
 .quick-tweet-internalbutton .tweet-it{
-    display: inline-block;
+    display: none;
     float: right;
 }
 .quick-tweet-internalbutton textarea{

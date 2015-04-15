@@ -1,5 +1,4 @@
 $( document ).ready(function() {
-    $('.tweet-it').hide();
     $('.quick-tweet-internalbutton .start').on( 'click', function() {
         $(this).parent().prepend('<textarea id="quick-tweet-area">' + $(this).attr('text') + '</textarea>');
         $('.tweet-it').show();
