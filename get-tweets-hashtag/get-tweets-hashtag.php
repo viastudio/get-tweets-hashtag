@@ -46,11 +46,12 @@ function get_tweets_update() {
 }
 
 //include css
-function loadcss() {
+function loadassets() {
     wp_register_style('get-tweets-style', plugins_url('default.css', __FILE__));
     wp_enqueue_style('get-tweets-style');
+    wp_enqueue_script( 'viascript', plugins_url('via.js', __FILE__), array( 'jquery' ),'', false );
 }
-loadcss();
+add_action( 'wp_enqueue_scripts', 'loadassets' );
 
 //plugin settings
 function get_tweets_createsettings() {
@@ -75,21 +76,23 @@ function get_tweets_settingspage() {
         $delete = $wpdb->query("TRUNCATE TABLE $table_name");
         echo $wpdb->last_error;
     }
-    echo '<h2>Get Tweets by Hashtag</h2><p>Place shortcode on any page or post for plugin to display. Tweets are cached for 1 hour (to reset cache just click the save changes button)</p>';
-    echo '<b>Shortcodes</b><br><br><code>[get-tweets hashtag="#yourhashtag"]</code><br><br><code>[get-tweets hashtag="#yourhashtag" count="10"]</code> (count is optional, default is set for 15)';
-    echo '<style>td{ padding-left:20px; }</style>';
-    echo '<h2>Twitter API Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information for the plugin to work.</p>';
-    echo '<form method="post" action="options.php"><table>';
-    settings_fields('get-tweets-api');
-    do_settings_sections('get-tweets-api');
-    echo '<tr><td>Oauth Access Token</td><td><input type="text" name="oauth_access_token" value="' . esc_attr(get_option('oauth_access_token')) . '" />';
-    echo '<tr><td>Oauth Access Secret</td><td><input type="text" name="oauth_access_token_secret" value="' . esc_attr(get_option('oauth_access_token_secret')) . '" />';
-    echo '<tr><td>Consumer Key</td><td><input type="text" name="consumer_key" value="' . esc_attr(get_option('consumer_key')) . '" />';
-    echo '<tr><td>Consimer Secret</td><td><input type="text" name="consumer_secret" value="' . esc_attr(get_option('consumer_secret')) . '" />';
-    echo '</table>';
-    submit_button();
-    echo '<h2>About</h2><p>Created by Nick Stewart at <a href="http://viastudio.com" target="_blank">VIA Studio</a>. ';
-    echo 'Check out the <a href="http://silencio.io/" target="_blank">Silencio theme framework</a></p>';
+?>
+    <h2>Get Tweets by Hashtag</h2><p>Place shortcode on any page or post for plugin to display. Tweets are cached for 1 hour (to reset cache just click the save changes button)</p>';
+    <b>Shortcodes</b><br><br><code>[get-tweets hashtag="#yourhashtag"]</code><br><br><code>[get-tweets hashtag="#yourhashtag" count="10"]</code> (count is optional, default is set for 15)';
+    <style>td{ padding-left:20px; }</style>';
+    <h2>Twitter API Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information for the plugin to work.</p>';
+    <form method="post" action="options.php"><table>';
+    <?php settings_fields('get-tweets-api'); ?>
+    <?php do_settings_sections('get-tweets-api'); ?>
+    <tr><td>Oauth Access Token</td><td><input type="text" name="oauth_access_token" value="<?php echo esc_attr(get_option('oauth_access_token')); ?>" />
+    <tr><td>Oauth Access Secret</td><td><input type="text" name="oauth_access_token_secret" value="<?php echo esc_attr(get_option('oauth_access_token_secret')); ?>" />
+    <tr><td>Consumer Key</td><td><input type="text" name="consumer_key" value="<?php echo esc_attr(get_option('consumer_key')); ?>"></td></tr>
+    <tr><td>Consimer Secret</td><td><input type="text" name="consumer_secret" value="<?php echo esc_attr(get_option('consumer_secret')); ?>" />
+    </table>';
+    <?php submit_button(); ?>
+    <h2>About</h2><p>Created by Nick Stewart at <a href="http://viastudio.com" target="_blank">VIA Studio</a>. ';
+    Check out the <a href="http://silencio.io/" target="_blank">Silencio theme framework</a></p>';
+<?php
 }
 //creates the cache file and checks to see if it needs to be recreated
 function get_tweets_cache($hashtag, $count) {
@@ -159,11 +162,13 @@ function get_tweets_get($hashtag, $count) {
     $results = $wpdb->get_results("select * from $table_name where hashtag = '" . $hashtag . "' LIMIT 1");
     $tweets = unserialize(gzuncompress(base64_decode($results['0']->cache)));
     foreach ($tweets as $tweet => $key) {
-        echo '<div class="quick-tweet"><div class="quick-tweet-avatar"><img src="' . $tweets[$tweet]['user_pic'] . '"></div>';
-        echo '<div class="quick-tweet-name"><a href="https://twitter.com/' . $tweets[$tweet]['user_id'] . '/status/' . $tweets[$tweet]['tweet_id'] . '">';
-        echo '<b>' . $tweets[$tweet]['user_name'] . '</b></a></div>';
-        echo '<div class="quick-tweet-text">' . $tweets[$tweet]['text'] . '</div>';
-        echo '</div>';
+?>
+    <div class="quick-tweet"><div class="quick-tweet-avatar"><img src="<?php echo $tweets[$tweet]['user_pic']; ?>"></div>
+    <div class="quick-tweet-name"><a href="https://twitter.com/<?php echo $tweets[$tweet]['user_id'] . '/status/' . $tweets[$tweet]['tweet_id']; ?>">
+    <b><?php echo $tweets[$tweet]['user_name']; ?></b></a></div>
+    <div class="quick-tweet-text"><?php echo $tweets[$tweet]['text']; ?></div>
+    </div>
+<?php
     }
 }
 //shortcode function
@@ -201,7 +206,6 @@ function get_tweets_viatweet_shortcode($atts, $content = null) {
     extract(shortcode_atts(array( 'text' => '', 'title' => '' ), $atts));
     if ($text) {
         if ($title) {
-            echo '<script src="' . plugins_url('via.js', __FILE__) . '"></script>';
             echo '<div class="quick-tweet-internalbutton"><a class="start" text="' . $text . '">' . $title . '</a><a class="tweet-it" target="_blank"href="#">Post It!</a></div>';
         } else {
             echo 'Missing title';
