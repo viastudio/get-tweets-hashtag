@@ -98,6 +98,7 @@ function get_tweets_cache($hashtag, $count) {
     $results = $wpdb->get_results("select * from $table_name where hashtag = '" . $hashtag . "' LIMIT 1");
     if (count($results) > 0) {
         if (($results['0']->created) < date('H')) {
+            //serialize, compress, and encode since its a json object...
             $tweets = base64_encode(gzcompress(serialize(get_tweets_find($hashtag, $count))));
             $wpdb->insert(
                 $table_name,
