@@ -174,21 +174,32 @@ function get_tweets_get($hashtag, $count) {
 //shortcode function
 function get_tweets_tweets_shortcode($atts, $content = null) {
     extract(shortcode_atts(array( 'hashtag' => '', 'count' => ''), $atts));
-    //check to make sure all thte settings are filled
-    $continue = 'no';
-    if (strlen(get_option('oauth_access_token')) > 10 && strlen(get_option('oauth_access_token_secret')) > 10 && strlen(get_option('consumer_key')) > 10 && strlen(get_option('consumer_secret')) > 10 ) {
-        $continue = 'yes';
+
+    if (!strlen(get_option('oauth_access_token')) > 10) {
+        echo 'Please add your oauth access token';
+        return;
     }
-    if($continue == 'yes'){
-        if ($hashtag) {
-            if ($count > 0) {
-                get_tweets_get($hashtag, $count);
-            } else {
-                get_tweets_get($hashtag, '15');
-            }
+    if (!strlen(get_option('oauth_access_token_secret')) > 10) {
+        echo 'Please add your oauth access token secret';
+        return;
+    }
+    if (!strlen(get_option('consumer_key')) > 10) {
+        echo 'Please add your consumer key';
+        return;
+    }
+    if (!strlen(get_option('consumer_secret')) > 10) {
+        echo 'Please add your consumer secret';
+        return;
+    }
+
+    if ($hashtag) {
+        if ($count > 0) {
+            get_tweets_get($hashtag, $count);
         } else {
-            echo 'Please use add a hashtag to search.. [get-tweets hashtag="#nfl"] .. for example';
+            get_tweets_get($hashtag, '15');
         }
+    } else {
+        echo 'Please use add a hashtag to search.. [get-tweets hashtag="#nfl"] .. for example';
     }
 }
 //custom shortcodes for VIA
