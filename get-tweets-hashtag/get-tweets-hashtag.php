@@ -49,9 +49,9 @@ function get_tweets_update() {
 function loadassets() {
     wp_register_style('get-tweets-style', plugins_url('default.css', __FILE__));
     wp_enqueue_style('get-tweets-style');
-    wp_enqueue_script( 'viascript', plugins_url('via.js', __FILE__), array( 'jquery' ),'', false );
+    wp_enqueue_script('viascript', plugins_url('via.js', __FILE__), array( 'jquery' ), '', false);
 }
-add_action( 'wp_enqueue_scripts', 'loadassets' );
+add_action('wp_enqueue_scripts', 'loadassets');
 
 //plugin settings
 function get_tweets_createsettings() {
@@ -82,14 +82,18 @@ function get_tweets_settingspage() {
     <style>td{ padding-left:20px; }</style>';
     <h2>Twitter API Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information for the plugin to work.</p>';
     <form method="post" action="options.php"><table>';
-    <?php settings_fields('get-tweets-api'); ?>
-    <?php do_settings_sections('get-tweets-api'); ?>
+<?php
+settings_fields('get-tweets-api');
+do_settings_sections('get-tweets-api');
+?>
     <tr><td>Oauth Access Token</td><td><input type="text" name="oauth_access_token" value="<?php echo esc_attr(get_option('oauth_access_token')); ?>" />
     <tr><td>Oauth Access Secret</td><td><input type="text" name="oauth_access_token_secret" value="<?php echo esc_attr(get_option('oauth_access_token_secret')); ?>" />
     <tr><td>Consumer Key</td><td><input type="text" name="consumer_key" value="<?php echo esc_attr(get_option('consumer_key')); ?>"></td></tr>
     <tr><td>Consimer Secret</td><td><input type="text" name="consumer_secret" value="<?php echo esc_attr(get_option('consumer_secret')); ?>" />
     </table>';
-    <?php submit_button(); ?>
+<?php
+submit_button();
+?>
     <h2>About</h2><p>Created by Nick Stewart at <a href="http://viastudio.com" target="_blank">VIA Studio</a>. ';
     Check out the <a href="http://silencio.io/" target="_blank">Silencio theme framework</a></p>';
 <?php
