@@ -77,11 +77,11 @@ function get_tweets_settingspage() {
         echo $wpdb->last_error;
     }
 ?>
-    <h2>Get Tweets by Hashtag</h2><p>Place shortcode on any page or post for plugin to display. Tweets are cached for 1 hour (to reset cache just click the save changes button)</p>';
-    <b>Shortcodes</b><br><br><code>[get-tweets hashtag="#yourhashtag"]</code><br><br><code>[get-tweets hashtag="#yourhashtag" count="10"]</code> (count is optional, default is set for 15)';
-    <style>td{ padding-left:20px; }</style>';
-    <h2>Twitter API Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information for the plugin to work.</p>';
-    <form method="post" action="options.php"><table>';
+    <h2>Get Tweets by Hashtag</h2><p>Place shortcode on any page or post for plugin to display. Tweets are cached for 1 hour (to reset cache just click the save changes button)</p>
+    <b>Shortcodes</b><br><br><code>[get-tweets hashtag="#yourhashtag"]</code><br><br><code>[get-tweets hashtag="#yourhashtag" count="10"]</code> (count is optional, default is set for 15)
+    <style>td{ padding-left:20px; }</style>
+    <h2>Twitter API Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information for the plugin to work.</p>
+    <form method="post" action="options.php"><table>
 <?php
 settings_fields('get-tweets-api');
 do_settings_sections('get-tweets-api');
@@ -90,12 +90,12 @@ do_settings_sections('get-tweets-api');
     <tr><td>Oauth Access Secret</td><td><input type="text" name="oauth_access_token_secret" value="<?php echo esc_attr(get_option('oauth_access_token_secret')); ?>" />
     <tr><td>Consumer Key</td><td><input type="text" name="consumer_key" value="<?php echo esc_attr(get_option('consumer_key')); ?>"></td></tr>
     <tr><td>Consimer Secret</td><td><input type="text" name="consumer_secret" value="<?php echo esc_attr(get_option('consumer_secret')); ?>" />
-    </table>';
+    </table>
 <?php
 submit_button();
 ?>
-    <h2>About</h2><p>Created by Nick Stewart at <a href="http://viastudio.com" target="_blank">VIA Studio</a>. ';
-    Check out the <a href="http://silencio.io/" target="_blank">Silencio theme framework</a></p>';
+    <h2>About</h2><p>Created by Nick Stewart at <a href="http://viastudio.com" target="_blank">VIA Studio</a>.
+    Check out the <a href="http://silencio.io/" target="_blank">Silencio theme framework</a></p>
 <?php
 }
 //creates the cache file and checks to see if it needs to be recreated
@@ -179,19 +179,19 @@ function get_tweets_get($hashtag, $count) {
 function get_tweets_tweets_shortcode($atts, $content = null) {
     extract(shortcode_atts(array( 'hashtag' => '', 'count' => ''), $atts));
 
-    if (!strlen(get_option('oauth_access_token')) > 10) {
+    if (strlen(get_option('oauth_access_token')) < 10) {
         echo 'Please add your oauth access token';
         return;
     }
-    if (!strlen(get_option('oauth_access_token_secret')) > 10) {
+    if (strlen(get_option('oauth_access_token_secret')) < 10) {
         echo 'Please add your oauth access token secret';
         return;
     }
-    if (!strlen(get_option('consumer_key')) > 10) {
+    if (strlen(get_option('consumer_key')) < 10) {
         echo 'Please add your consumer key';
         return;
     }
-    if (!strlen(get_option('consumer_secret')) > 10) {
+    if (strlen(get_option('consumer_secret')) < 10) {
         echo 'Please add your consumer secret';
         return;
     }
