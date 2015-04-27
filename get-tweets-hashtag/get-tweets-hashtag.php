@@ -198,9 +198,15 @@ function get_tweets_tweets_shortcode($atts, $content = null) {
 
     if ($hashtag) {
         if ($count > 0) {
+            ob_start();
             get_tweets_get($hashtag, $count);
+            $tweets = ob_get_clean();
+            return $tweets;
         } else {
+            ob_start();
             get_tweets_get($hashtag, '15');
+            $tweets = ob_get_clean();
+            return $tweets;
         }
     } else {
         echo 'Please use add a hashtag to search.. [get-tweets hashtag="#nfl"] .. for example';
@@ -211,7 +217,10 @@ function get_tweets_viatweet_shortcode($atts, $content = null) {
     extract(shortcode_atts(array( 'text' => '', 'title' => '' ), $atts));
     if ($text) {
         if ($title) {
+            ob_start();
             echo '<div class="quick-tweet-internalbutton"><a class="start" text="' . $text . '">' . $title . '</a><a class="tweet-it" target="_blank"href="#">Post It!</a></div>';
+            $tweets = ob_get_clean();
+            return $tweets;
         } else {
             echo 'Missing title';
         }
