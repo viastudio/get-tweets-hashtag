@@ -224,7 +224,7 @@ function get_tweets_viatweet_shortcode($atts, $content = null) {
     if ($text) {
         if ($title) {
             ob_start();
-            echo '<div class="quick-tweet-internalbutton"><a class="start" text="' . $text . '">' . $title . '</a><a class="tweet-it" target="_blank"href="#">Post It!</a></div>';
+            echo '<div class="quick-tweet-tweetbutton"><a class="start" text="' . $text . '">' . $title . '</a><a class="tweet-it" target="_blank"href="#">Post It!</a></div>';
             $tweets = ob_get_clean();
             return $tweets;
         } else {

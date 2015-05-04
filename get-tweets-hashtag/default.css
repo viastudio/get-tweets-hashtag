@@ -19,27 +19,27 @@
     padding-top: 10px;
 }
 
-.quick-tweet-internalbutton {
+.quick-tweet-tweetbutton {
     display: block;
     clear: both;
     margin-top: 30px;
     padding-bottom: 30px;
 }
-.quick-tweet-internalbutton a {
+.quick-tweet-tweetbutton a {
     padding: 15px;
     background: #4099FF;
     border-radius: 5px;
     color: #fff;
     text-decoration: none;
 }
-.quick-tweet-internalbutton a:visited{
+.quick-tweet-tweetbutton a:visited{
     color: #fff;
 }
-.quick-tweet-internalbutton .tweet-it{
+.quick-tweet-tweetbutton .tweet-it{
     display: none;
     float: right;
 }
-.quick-tweet-internalbutton textarea{
+.quick-tweet-tweetbutton textarea{
     margin-bottom: 30px;
     padding: 5px;
 }
