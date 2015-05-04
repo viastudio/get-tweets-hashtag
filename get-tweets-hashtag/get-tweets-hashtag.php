@@ -104,14 +104,14 @@ function get_tweets_cache($hashtag, $count) {
     $table_name = $wpdb->prefix . "get_tweets";
     $results = $wpdb->get_results("select * from $table_name where hashtag = '" . $hashtag . "' LIMIT 1");
     if (count($results) > 0) {
-        if (($results['0']->created) < date('H')) {
+        if (($results['0']->created) < date('jH')) {
             //serialize, compress, and encode since its a json object...
             $tweets = base64_encode(gzcompress(serialize(get_tweets_find($hashtag, $count))));
             $wpdb->insert(
                 $table_name,
                 array(
                     'hashtag' => $hashtag,
-                    'created' => date('H'),
+                    'created' => date('jH'),
                     'cache' => $tweets
                 )
             );
@@ -122,7 +122,7 @@ function get_tweets_cache($hashtag, $count) {
             $table_name,
             array(
                 'hashtag' => $hashtag,
-                'created' => date('H'),
+                'created' => date('jH'),
                 'cache' => $tweets
             )
         );
