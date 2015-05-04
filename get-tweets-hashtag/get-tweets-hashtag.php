@@ -165,15 +165,21 @@ function get_tweets_get($hashtag, $count) {
     $table_name = $wpdb->prefix . "get_tweets";
     $results = $wpdb->get_results("select * from $table_name where hashtag = '" . $hashtag . "' LIMIT 1");
     $tweets = unserialize(gzuncompress(base64_decode($results['0']->cache)));
+    echo '<div class="quick-tweet"><ol>';
     foreach ($tweets as $tweet => $key) {
 ?>
-    <div class="quick-tweet"><div class="quick-tweet-avatar"><img src="<?php echo $tweets[$tweet]['user_pic']; ?>"></div>
-    <div class="quick-tweet-name"><a href="https://twitter.com/<?php echo $tweets[$tweet]['user_id'] . '/status/' . $tweets[$tweet]['tweet_id']; ?>">
-    <b><?php echo $tweets[$tweet]['user_name']; ?></b></a></div>
-    <div class="quick-tweet-text"><?php echo $tweets[$tweet]['text']; ?></div>
-    </div>
+    <li>
+        <div class="quick-tweet-avatar">
+            <img src="<?php echo $tweets[$tweet]['user_pic']; ?>">
+        </div>
+        <div class="quick-tweet-text">
+            <div class="quick-tweet-username"><a href="https://twitter.com/<?php echo $tweets[$tweet]['user_id'] . '/status/' . $tweets[$tweet]['tweet_id']; ?>"><?php echo $tweets[$tweet]['user_name']; ?></a></div>
+            <div class="quick-tweet-tweettext"><?php echo $tweets[$tweet]['text']; ?></div>
+        </div>
+    </li>
 <?php
     }
+    echo '</ol></div>';
 }
 //shortcode function
 function get_tweets_tweets_shortcode($atts, $content = null) {
