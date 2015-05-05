@@ -10,12 +10,11 @@ Get tweets by hashtag and display them
 
 == Description ==
 
-Retrieves Tweets from Twitter by hashtag and then displays them on your page or post by using a shortcode. Tweets are cached an the plugin
-comes with a basic styling.
+Retrieves Tweets from Twitter by hashtag and then displays them on your page or post by using a shortcode. Tweets are cached an the plugin and comes with a basic styling. Also includes the ability to add a Tweet button with custom Tweet and button text options
 
 == Installation ==
 
-1. Upload plugin to the `/wp-content/plugins/` directory
+1. Upload plugin to the ‘/wp-content/plugins/‘ directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Place your Twitter Oauth settings in the Get Tweets by Hashtag Settings menu
 4. Use shortcode on any page or post
