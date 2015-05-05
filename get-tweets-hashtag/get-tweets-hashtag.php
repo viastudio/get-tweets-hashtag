@@ -223,11 +223,11 @@ function get_tweets_tweets_shortcode($atts, $content = null) {
 }
 //custom shortcodes for VIA
 function get_tweets_viatweet_shortcode($atts, $content = null) {
-    extract(shortcode_atts(array( 'text' => '', 'title' => '' ), $atts));
-    if ($text) {
-        if ($title) {
+    extract(shortcode_atts(array( 'tweet' => '', 'button' => '' ), $atts));
+    if ($tweet) {
+        if ($button) {
             ob_start();
-            echo '<div class="quick-tweet-tweetbutton"><a class="start" text="' . $text . '">' . $title . '</a><a class="tweet-it" target="_blank"href="#">Post It!</a></div>';
+            echo '<div class="quick-tweet-tweetbutton"><a class="start" text="' . $tweet . '">' . $button . '</a><a class="tweet-it" target="_blank"href="#">Post It!</a></div>';
             $tweets = ob_get_clean();
             return $tweets;
         } else {
