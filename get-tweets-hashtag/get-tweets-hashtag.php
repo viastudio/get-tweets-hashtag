@@ -78,7 +78,10 @@ function get_tweets_settingspage() {
     }
 ?>
     <h2>Get Tweets by Hashtag</h2><p>Place shortcode on any page or post for plugin to display. Tweets are cached for 1 hour (to reset cache just click the save changes button)</p>
-    <b>Shortcodes</b><br><br><code>[get-tweets hashtag="#yourhashtag"]</code><br><br><code>[get-tweets hashtag="#yourhashtag" count="10"]</code> (count is optional, default is set for 15)
+    <b>Shortcodes</b>
+        <br><br><code>[get-tweets hashtag="#louisville"]</code>
+        <br><br><code>[get-tweets hashtag="#louisville" count="10"]</code> (count is optional, default is set for 15)
+        <br><br><code>[get-tweets-button tweet="Today in #Louisville I will" button="What are you doing in #Louisville ?"]</code>
     <style>td{ padding-left:20px; }</style>
     <h2>Twitter API Settings</h2><p>Visit <a href="http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/" target="_blank">here</a> to learn how to retrieve this information for the plugin to work.</p>
     <form method="post" action="options.php"><table>
